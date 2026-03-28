@@ -330,9 +330,16 @@ def process_message(text, user_id):
 
 @handler.add(PostbackEvent)
 def handle_postback(event):
-    data = event.postback.data
-    params = dict(urllib.parse.parse_qsl(data))
-    action = params.get("action", "")
+    logger.info(f"=== Postback received ===")
+    logger.info(f"Postback data: {event.postback.data}")
+    try:
+        data = event.postback.data
+        params = dict(urllib.parse.parse_qsl(data))
+        action = params.get("action", "")
+    except Exception as e:
+        logger.error(f"Postback parse error: {e}")
+        reply(event, "系統錯誤，請重新操作。")
+        return
 
     if action == "book":
         handle_booking_step(event, params)
@@ -347,6 +354,7 @@ def handle_booking_step(event, params):
     name = params.get("name", "")
     date = params.get("date", "")
     time = params.get("time", "")
+    logger.info(f"Booking step={step} name={name} date={date} time={time}")
 
     if step == "2":
         # 選完日期 → 顯示時間
