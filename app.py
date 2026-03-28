@@ -1,8 +1,12 @@
 """LINE 預約機器人主程式"""
 
 import os
+import logging
 from flask import Flask, request, abort
 from dotenv import load_dotenv
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 from linebot.v3 import WebhookHandler
 from linebot.v3.exceptions import InvalidSignatureError
@@ -71,10 +75,20 @@ def callback():
     signature = request.headers.get("X-Line-Signature", "")
     body = request.get_data(as_text=True)
 
+    logger.info("=== Webhook received ===")
+    logger.info(f"Signature: {signature[:20]}..." if signature else "Signature: EMPTY")
+    logger.info(f"Body: {body[:200]}")
+    logger.info(f"SECRET set: {bool(os.getenv('LINE_CHANNEL_SECRET'))}")
+    logger.info(f"TOKEN set: {bool(os.getenv('LINE_CHANNEL_ACCESS_TOKEN'))}")
+
     try:
         handler.handle(body, signature)
     except InvalidSignatureError:
+        logger.error("Invalid signature!")
         abort(400)
+    except Exception as e:
+        logger.error(f"Error: {e}")
+        abort(500)
 
     return "OK"
 
