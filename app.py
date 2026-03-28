@@ -264,6 +264,8 @@ def handle_message(event):
     text = event.message.text.strip()
     user_id = event.source.user_id
 
+    logger.info(f"User ID: {user_id} | Message: {text}")
+
     # 業主管理指令
     if text.startswith("管理") and user_id == ADMIN_USER_ID:
         reply(event, process_admin(text))
