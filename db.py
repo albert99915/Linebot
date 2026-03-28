@@ -4,7 +4,7 @@ import os
 DB_PATH = os.path.join(os.path.dirname(__file__), "reservations.db")
 
 BUSINESS_START_HOUR = 9
-BUSINESS_END_HOUR = 22
+BUSINESS_END_HOUR = 21
 
 
 def get_connection():

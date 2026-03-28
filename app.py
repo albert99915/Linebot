@@ -160,12 +160,12 @@ def build_date_quick_reply(name):
 
 
 def build_time_quick_reply(name, date, people=1):
-    """產生可用時段的 QuickReply"""
+    """產生可用時段的 QuickReply（最多 13 個）"""
     available = get_available_hours(date, people)
     if not available:
         return None
     items = []
-    for time_str in available:
+    for time_str in available[:13]:
         hour = int(time_str.split(":")[0])
         label = f"{hour}:00"
         data = urllib.parse.urlencode({"action": "book", "step": "3", "name": name, "date": date, "time": time_str})
