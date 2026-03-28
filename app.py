@@ -154,7 +154,7 @@ def build_date_quick_reply(name):
             label = f"{d.month}/{d.day} ({weekday})"
         data = urllib.parse.urlencode({"action": "book", "step": "2", "name": name, "date": date_str})
         items.append(
-            QuickReplyItem(type="action", action=PostbackAction(label=label, data=data, display_text=label))
+            QuickReplyItem(type="action", action=PostbackAction(type="postback", label=label, data=data, display_text=label))
         )
     return QuickReply(items=items)
 
@@ -170,7 +170,7 @@ def build_time_quick_reply(name, date, people=1):
         label = f"{hour}:00"
         data = urllib.parse.urlencode({"action": "book", "step": "3", "name": name, "date": date, "time": time_str})
         items.append(
-            QuickReplyItem(type="action", action=PostbackAction(label=label, data=data, display_text=label))
+            QuickReplyItem(type="action", action=PostbackAction(type="postback", label=label, data=data, display_text=label))
         )
     return QuickReply(items=items)
 
@@ -188,7 +188,7 @@ def build_people_quick_reply(name, date, time):
         label = f"{p} 人"
         data = urllib.parse.urlencode({"action": "book", "step": "4", "name": name, "date": date, "time": time, "people": str(p)})
         items.append(
-            QuickReplyItem(type="action", action=PostbackAction(label=label, data=data, display_text=label))
+            QuickReplyItem(type="action", action=PostbackAction(type="postback", label=label, data=data, display_text=label))
         )
     return QuickReply(items=items)
 
@@ -245,11 +245,11 @@ def build_confirmation_flex(name, date, time, people):
                 FlexButton(
                     style="primary",
                     color="#06C755",
-                    action=PostbackAction(label="確認預約", data=confirm_data, display_text="確認預約"),
+                    action=PostbackAction(type="postback", label="確認預約", data=confirm_data, display_text="確認預約"),
                 ),
                 FlexButton(
                     style="secondary",
-                    action=PostbackAction(label="取消", data=cancel_data, display_text="取消預約"),
+                    action=PostbackAction(type="postback", label="取消", data=cancel_data, display_text="取消預約"),
                 ),
             ],
         ),
