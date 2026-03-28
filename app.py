@@ -61,6 +61,11 @@ HELP_TEXT = """📋 預約機器人使用說明
 輸入「幫助」可再次查看此說明"""
 
 
+@app.route("/health")
+def health():
+    return "OK"
+
+
 @app.route("/callback", methods=["POST"])
 def callback():
     signature = request.headers.get("X-Line-Signature", "")
